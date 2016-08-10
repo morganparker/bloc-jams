@@ -29,6 +29,7 @@ var albumPicasso = {
      ]
  };
 
+
  var albumBandOfHorses = {
      title: 'Infinite Arms',
      artist: 'Band of Horses',
@@ -44,7 +45,9 @@ var albumPicasso = {
      ]
  };
 
-var createSongRow = function(songNumber, songName, songLength) {
+
+  var createSongRow = function(songNumber, songName, songLength) {
+
      var template =
         '<tr class="album-view-song-item">'
       + '  <td class="song-item-number">' + songNumber + '</td>'
