@@ -1,3 +1,21 @@
+var getSongItem = function(element) {
+    switch (element.className) {
+        case 'album-song-button':
+        case 'ion-play':
+        case 'ion-pause':
+            return findParentByClassName(element, 'song-item-number');
+        case 'album-view-song-item':
+            return element.querySelector('.song-item-number');
+        case 'song-item-title':
+        case 'song-item-duration':
+            return findParentByClassName(element, 'album-view-song-item').querySelector('.song-item-number');
+        case 'song-item-number':
+            return element;
+        default:
+            return;
+    }  
+};
+
 var setSong = function(songNumber) {
   if (currentSoundFile) {
          currentSoundFile.stop();
@@ -35,7 +53,7 @@ var createSongRow = function(songNumber, songName, songLength) {
  
      var $row = $(template);
     
-    var clickHandler = function() {
+var clickHandler = function() {
 	var songNumber = parseInt($(this).attr('data-song-number'));
 
 	if (currentlyPlayingSongNumber !== null) {
@@ -47,18 +65,23 @@ var createSongRow = function(songNumber, songName, songLength) {
 		// Switch from Play -> Pause button to indicate new song is playing.
 		$(this).html(pauseButtonTemplate);
 		setSong(songNumber);
+		currentSoundFile.play();
         currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
         updatePlayerBarSong();
 	} else if (currentlyPlayingSongNumber === songNumber) {
-		// Switch from Pause -> Play button to pause currently playing song.
-		$(this).html(playButtonTemplate);
-        $('.main-controls .play-pause').html(playerBarPlayButton);
-		setSong(null);
-        currentSongFromAlbum = null;
-	}
+	    if (currentSoundFile.isPaused()) {
+            $(this).html(pauseButtonTemplate);
+            $('.main-controls .play-pause').html(playerBarPauseButton);
+            currentSoundFile.play();
+            } else {
+            $(this).html(playButtonTemplate);
+            $('.main-controls .play-pause').html(playerBarPlayButton);
+            currentSoundFile.pause();   
+           }
+		}
 };
     
-    var onHover = function(event) {
+var onHover = function(event) {
         var songNumberCell = $(this).find('.song-item-number');
         var songNumber = parseInt(songNumberCell.attr('data-song-number'));
 
@@ -67,7 +90,7 @@ var createSongRow = function(songNumber, songName, songLength) {
         }
     };
 
-    var offHover = function(event) {
+var offHover = function(event) {
         var songNumberCell = $(this).find('.song-item-number');
         var songNumber = parseInt(songNumberCell.attr('data-song-number'));
 
@@ -85,7 +108,7 @@ var createSongRow = function(songNumber, songName, songLength) {
     console.log("songNumber type is " + typeof songNumber + "\n and currentlyPlayingSongNumber type is " + typeof currentlyPlayingSongNumber);
  };
 
- var setCurrentAlbum = function(album) {
+var setCurrentAlbum = function(album) {
      currentAlbum = album;
      var $albumTitle = $('.album-view-title');
      var $albumArtist = $('.album-view-artist');
@@ -106,7 +129,7 @@ var createSongRow = function(songNumber, songName, songLength) {
      }
  };
 
- var trackIndex = function(album, song) {
+var trackIndex = function(album, song) {
      return album.songs.indexOf(song);
  };
 
