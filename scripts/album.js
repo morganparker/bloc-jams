@@ -296,10 +296,17 @@ var nextSong = function() {
     
 };
 
+//assignment 33
 var togglePlayfromPlayerBar = function() {
     
     
-}
+};
+
+//assignment 34
+var setCurrentTimeInPlayerBar = function(currentTime) {
+    $(.current-time).text(currentTime);
+    
+};
  
  var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 
