@@ -335,6 +335,6 @@ $(document).ready(function() {
     
     $nextButton.click(nextSong);
     
-    $togglePlay.click(togglePlayfromPlayerBar)
+    $togglePlay.click(togglePlayfromPlayerBar);
      
  });
